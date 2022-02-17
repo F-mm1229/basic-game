@@ -1,8 +1,7 @@
 body {
-    background: blue;
+    background: black;
 }
 #canvas1 {
-    background: blue;
     position: absolute;
     top: 50%;
     left: 50%;
