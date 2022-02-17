@@ -39,6 +39,8 @@ window.addEventListener('load', function () {
             this.frameX = 0;
             this.frameY = 0;
             this.speed = 0;
+            this.vy = 0;
+            this.weight = 1;
         }
         draw(context) {
             context.fillStyle = 'white';
@@ -47,15 +49,29 @@ window.addEventListener('load', function () {
             this.width, this.height, this.x, this.y, this.width, this.height);
         }
         update(input) {
-            //水平方向の移動
-            this.x += this.speed;
             if (input.keys.indexOf('ArrowRight') > -1) {
                 this.speed = 5;
             } else if (input.keys.indexOf('ArrowLeft') > -1) {
                 this.speed = -5;
+            } else if (input.keys.indexOf('ArrowUp') > -1) {
+                this.vy -= 10;
             } else {
                 this.speed = 0;
             }
+            //水平方向の移動
+            this.x += this.speed;
+            if (this.x < 0) this.x = 0;
+            else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
+            //垂直方向の移動
+            this.y += this.vy;
+            if (!this.onGroung()) {
+                this.vy += this.weight;
+            } else {
+                this.vy = 0;
+            }
+        }
+        onGroung() {
+            return this.y >= this.gameHeight - this.height;
         }
     }
 
