@@ -53,8 +53,8 @@ window.addEventListener('load', function () {
                 this.speed = 5;
             } else if (input.keys.indexOf('ArrowLeft') > -1) {
                 this.speed = -5;
-            } else if (input.keys.indexOf('ArrowUp') > -1) {
-                this.vy -= 10;
+            } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGroung()) {
+                this.vy -= 32;
             } else {
                 this.speed = 0;
             }
@@ -69,6 +69,7 @@ window.addEventListener('load', function () {
             } else {
                 this.vy = 0;
             }
+            if (this.y > this.gameHeight - this.height) this.gameHeight - this.height
         }
         onGroung() {
             return this.y >= this.gameHeight - this.height;
