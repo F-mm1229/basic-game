@@ -81,9 +81,11 @@ window.addEventListener('load', function () {
             this.y += this.vy;
             if (!this.onGroung()) {
                 this.vy += this.weight;
+                this.maxFrame = 5;
                 this.frameY = 1;
             } else {
                 this.vy = 0;
+                this.maxFrame = 8;
                 this.frameY = 0;
             }
             if (this.y > this.gameHeight - this.height) this.gameHeight - this.height
@@ -129,6 +131,7 @@ window.addEventListener('load', function () {
             this.frameTimer = 0;
             this.frameInterval = 1000 / this.fps;
             this.speed = 8;
+            this.markedForDelection = false;
         }
         draw(context) {
             context.drawImage(this.image, this.frameX * this.width, 0, this.width, this.height,
@@ -143,12 +146,14 @@ window.addEventListener('load', function () {
                 this.frameTimer += deltaTime;
             }
             this.x -= this.speed;
+            if (this.x < 0 - this.width) this.markedForDelection = true;
         }
     }
     
     function handleEnemies(deltaTime) {
         if (enemyTimer > enemyInterval + randomEnemyInterval) {
             enemies.push(new Enemy(canvas.width, canvas.height));
+            console.log(enemies);
             randomEnemyInterval = Math.random() * 1000 + 500;
             enemyTimer = 0;
         } else {
@@ -157,7 +162,8 @@ window.addEventListener('load', function () {
         enemies.forEach(enemy => {
             enemy.draw(ctx);
             enemy.update(deltaTime);
-        })
+        });
+        enemies = enemies.filter(enemy => !enemy.markedForDelection);
     }
 
     function displayStatusText() {
