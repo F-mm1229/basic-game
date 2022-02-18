@@ -53,9 +53,17 @@ window.addEventListener('load', function () {
             context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height,
             this.width, this.height, this.x, this.y, this.width, this.height);
         }
-        update(input) {
-            if (this.frameX >= this.maxFrame) this.frameX = 0;
-            else this.frameX++;
+        update(input, deltaTime) {
+            // キャラクターの動き
+            if (this.frameTimer > this.frameInterval) {
+                if (this.frameX >= this.maxFrame) this.frameX = 0;
+                else this.frameX++;
+                this.frameTimer = 0;
+            } else {
+                this.frameTimer += deltaTime;
+            }
+            
+            // プレイヤーの操作
             if (input.keys.indexOf('ArrowRight') > -1) {
                 this.speed = 5;
             } else if (input.keys.indexOf('ArrowLeft') > -1) {
@@ -65,11 +73,11 @@ window.addEventListener('load', function () {
             } else {
                 this.speed = 0;
             }
-            //水平方向の移動
+            // 水平方向の移動
             this.x += this.speed;
             if (this.x < 0) this.x = 0;
             else if (this.x > this.gameWidth - this.width) this.x = this.gameWidth - this.width
-            //垂直方向の移動
+            // 垂直方向の移動
             this.y += this.vy;
             if (!this.onGroung()) {
                 this.vy += this.weight;
@@ -172,7 +180,7 @@ window.addEventListener('load', function () {
         background.draw(ctx);
         //background.update();
         player.draw(ctx);
-        player.update(input);
+        player.update(input, deltaTime);
         handleEnemies(deltaTime);
         requestAnimationFrame(animate);
     }
