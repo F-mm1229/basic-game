@@ -110,13 +110,14 @@ window.addEventListener('load', function () {
             this.x = this.gameWidth;
             this.y = this.gameHeight - this.height;
             this.frameX = 0;
+            this.speed = 8;
         }
         draw(context) {
             context.drawImage(this.image, this.frameX * this.width, 0, this.width, this.height,
             this.x, this.y, this.width, this.height);
         }
         update() {
-            this.x--;
+            this.x -= this.speed;
         }
     }
     
@@ -143,7 +144,7 @@ window.addEventListener('load', function () {
 
     let lastTime = 0;
     let enemyTimer = 0;
-    let enemyInterval = 1000;
+    let enemyInterval = 2000;
     
     function animate(timeStamp) {
         const deltaTime = timeStamp - lastTime;
